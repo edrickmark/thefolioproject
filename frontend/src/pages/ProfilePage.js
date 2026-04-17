@@ -1,10 +1,11 @@
+// frontend/src/pages/ProfilePage.js
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
 
 function ProfilePage() {
   const { user, setUser } = useAuth();
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState('');
@@ -16,19 +17,24 @@ function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
 
+  const imageBaseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
   useEffect(() => {
     if (user) {
-      setUsername(user.username || '');
+      setName(user.name || '');
       setBio(user.bio || '');
-      setProfilePicPreview(user.profilePic || 'https://via.placeholder.com/150');
+      // If user has profilePic, use it; otherwise placeholder
+      const picUrl = user.profilePic 
+        ? `${imageBaseUrl}/uploads/${user.profilePic}`
+        : 'https://via.placeholder.com/150';
+      setProfilePicPreview(picUrl);
     }
-  }, [user]);
+  }, [user, imageBaseUrl]);
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfilePic(file);
-      // Create preview URL
       const previewUrl = URL.createObjectURL(file);
       setProfilePicPreview(previewUrl);
     }
@@ -41,19 +47,20 @@ function ProfilePage() {
     setLoading(true);
 
     const fd = new FormData();
-    fd.append('username', username);
+    fd.append('name', name);
     fd.append('bio', bio);
     if (profilePic) {
       fd.append('profilePic', profilePic);
     }
 
     try {
-      const { data } = await API.put('/users/profile', fd);
-      // Update user context with new data
-      setUser({ ...user, ...data.user });
+      const { data } = await API.put('/auth/profile', fd);
+      // Update user context with new user data (data.user contains updated user)
+      setUser(data.user);
       setMessage('Profile updated successfully!');
-      // Clear success message after 3 seconds
       setTimeout(() => setMessage(''), 3000);
+      // Clear the file input state
+      setProfilePic(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to update profile');
     } finally {
@@ -79,7 +86,7 @@ function ProfilePage() {
     setPasswordLoading(true);
 
     try {
-      await API.put('/users/change-password', {
+      await API.put('/auth/change-password', {
         currentPassword,
         newPassword
       });
@@ -87,7 +94,6 @@ function ProfilePage() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-      // Clear success message after 3 seconds
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to change password');
@@ -125,12 +131,12 @@ function ProfilePage() {
         </div>
         
         <h3>Profile Information</h3>
-        <label>Username:</label>
+        <label>Name:</label>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter your full name"
           required
         />
         
