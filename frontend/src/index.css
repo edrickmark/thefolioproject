@@ -1811,36 +1811,220 @@ form {
 }
 
 /* Buttons - only color changes, no layout */
-.edit-btn, .save-post-btn, .reply-btn, .action-btn.activate {
-  background: #FC809F !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 30px !important;
-  padding: 6px 16px !important;
-  cursor: pointer !important;
-}
-
-.remove-btn, .delete-msg-btn, .action-btn.deactivate {
-  background: #ffe4e8 !important;
-  color: #c62828 !important;
-  border: 1px solid #ffb3c1 !important;
-  border-radius: 30px !important;
-  padding: 6px 16px !important;
-  cursor: pointer !important;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  transition: 0.2s;
-}
-
 /* ==========================================================
-   GLOBAL BUTTON STYLES – PINK THEME (no layout changes)
+   ADMIN DASHBOARD – COMPLETE FIX (Pink Theme + Layout)
    ========================================================== */
 
-/* Primary buttons – pink gradient */
-button[type="submit"],
-.save-btn,
+/* Main container */
+.admin-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFE9EF 0%, #FFC9D7 100%);
+  padding: 40px 20px;
+}
+
+.dark-mode .admin-dashboard {
+  background: linear-gradient(180deg, #000000 0%, #121212 100%);
+}
+
+.admin-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(252, 128, 159, 0.2);
+  overflow: hidden;
+}
+
+.dark-mode .admin-container {
+  background: rgba(45, 45, 45, 0.95);
+}
+
+/* Header */
+.admin-header {
+  background: linear-gradient(135deg, #FC809F 0%, #FF9CB5 100%);
+  padding: 40px 30px;
+  text-align: center;
+  color: white;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 20px 30px 0 30px;
+  background: white;
+  border-bottom: 2px solid #FFE9EF;
+}
+
+.dark-mode .admin-tabs {
+  background: #2d2d2d;
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  border-radius: 12px 12px 0 0;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: #FC809F;
+  background: #FFF5F7;
+  border-bottom: 3px solid #FC809F;
+}
+
+/* Content area */
+.admin-content {
+  padding: 30px;
+}
+
+/* ---------- POSTS GRID (FIX LAYOUT) ---------- */
+.posts-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
+  gap: 20px !important;
+}
+
+.post-card-admin {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-card-admin:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(252, 128, 159, 0.2);
+}
+
+.dark-mode .post-card-admin {
+  background: #3a3a3a;
+}
+
+.post-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.post-card-admin:hover .post-image img {
+  transform: scale(1.05);
+}
+
+.post-info {
+  padding: 20px;
+}
+
+.post-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #4A1D24;
+}
+
+.dark-mode .post-info h3 {
+  color: #e0e0e0;
+}
+
+.post-meta {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.post-excerpt {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.dark-mode .post-excerpt {
+  color: #aaa;
+}
+
+.post-status {
+  margin-bottom: 12px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 20px 20px;
+}
+
+/* ---------- USERS TABLE ---------- */
+.users-table-container {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid #FFE9EF;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.users-table th {
+  background: #FC809F;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.users-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #FFE9EF;
+}
+
+.dark-mode .users-table td {
+  border-bottom-color: #404040;
+  color: #e0e0e0;
+}
+
+/* ---------- MESSAGES ---------- */
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.message-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  border-left: 4px solid #ddd;
+}
+
+.message-card.unread {
+  border-left-color: #FC809F;
+  background: #fff9fa;
+}
+
+.dark-mode .message-card {
+  background: #3a3a3a;
+}
+
+/* ---------- BUTTONS – PINK THEME (FIX TRANSPARENT) ---------- */
+/* Primary buttons */
 .edit-btn,
 .save-post-btn,
 .reply-btn,
@@ -1848,16 +2032,17 @@ button[type="submit"],
 .action-btn.activate,
 .post-actions .edit-btn,
 .message-actions .reply-btn,
-.profile-page .save-btn {
+.save-btn {
   background: linear-gradient(135deg, #FC809F, #FF9CB5) !important;
   color: white !important;
   border: none !important;
-  transition: all 0.2s ease !important;
+  border-radius: 30px !important;
+  padding: 6px 16px !important;
   cursor: pointer !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
 }
 
-button[type="submit"]:hover,
-.save-btn:hover,
 .edit-btn:hover,
 .save-post-btn:hover,
 .reply-btn:hover,
@@ -1865,13 +2050,13 @@ button[type="submit"]:hover,
 .action-btn.activate:hover,
 .post-actions .edit-btn:hover,
 .message-actions .reply-btn:hover,
-.profile-page .save-btn:hover {
+.save-btn:hover {
   background: linear-gradient(135deg, #E86A8A, #FC809F) !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(252, 128, 159, 0.3);
 }
 
-/* Destructive buttons – soft pink with red text */
+/* Destructive buttons */
 .remove-btn,
 .delete-msg-btn,
 .action-btn.deactivate,
@@ -1880,8 +2065,11 @@ button[type="submit"]:hover,
   background: #ffe4e8 !important;
   color: #c62828 !important;
   border: 1px solid #ffb3c1 !important;
-  transition: all 0.2s ease !important;
+  border-radius: 30px !important;
+  padding: 6px 16px !important;
   cursor: pointer !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
 }
 
 .remove-btn:hover,
@@ -1893,14 +2081,16 @@ button[type="submit"]:hover,
   transform: translateY(-2px);
 }
 
-/* Cancel / secondary buttons – light pink */
+/* Cancel buttons */
 .cancel-btn,
 .reply-form .cancel-btn {
   background: #fff0f3 !important;
   color: #FC809F !important;
   border: 1px solid #FFB3C6 !important;
-  transition: all 0.2s ease !important;
+  border-radius: 30px !important;
+  padding: 6px 16px !important;
   cursor: pointer !important;
+  font-weight: 600 !important;
 }
 
 .cancel-btn:hover,
@@ -1909,28 +2099,116 @@ button[type="submit"]:hover,
   transform: translateY(-2px);
 }
 
-/* Ensure all buttons have consistent rounded corners (optional) */
-button,
-.btn,
-.action-btn,
-.edit-btn,
-.remove-btn,
-.save-btn,
-.reply-btn,
-.delete-msg-btn,
-.cancel-btn {
+/* Ensure any other buttons inside admin get pink style */
+.admin-dashboard button:not(.tab-btn) {
   border-radius: 30px !important;
 }
 
-/* Override any conflicting background on logout button (if needed) */
-.logout-btn {
-  background: transparent !important;
-  border: 1px solid #FC809F !important;
-  color: #FC809F !important;
+/* Edit form inside posts */
+.post-edit-form {
+  padding: 25px;
 }
 
-.logout-btn:hover {
-  background: #FC809F !important;
-  color: white !important;
-  transform: translateY(-2px);
+.post-edit-form input,
+.post-edit-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #FFE9EF;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Status badges */
+.status-badge,
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.published,
+.status-badge.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.removed,
+.status-badge.inactive {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Alerts */
+.admin-error,
+.admin-success {
+  margin: 20px 30px;
+  padding: 12px 20px;
+  border-radius: 12px;
+}
+
+.admin-error {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+.admin-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+/* Loading */
+.admin-loading {
+  text-align: center;
+  padding: 60px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #FFE9EF;
+  border-top-color: #FC809F;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-dashboard { padding: 20px; }
+  .admin-container { border-radius: 24px; }
+  .admin-header { padding: 30px 20px; }
+  .admin-header h1 { font-size: 1.8rem; }
+  .admin-tabs { padding: 15px 20px 0; flex-wrap: wrap; }
+  .tab-btn { padding: 8px 16px; }
+  .admin-content { padding: 20px; }
+  .posts-grid { grid-template-columns: 1fr !important; }
+  .post-actions { flex-direction: column; }
+  .edit-actions { flex-direction: column; }
+  .users-table th, .users-table td { padding: 8px 10px; font-size: 0.85rem; }
 }
