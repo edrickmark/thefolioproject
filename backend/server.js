@@ -16,31 +16,33 @@ const app = express();
 connectDB(); // Connect to MongoDB
 
 // ── Middleware ─────────────────────────────────────────────────
-// Allow multiple origins: local React (dev) + Vercel frontend (prod)
+// Allow multiple origins: local React (dev) + Vercel frontends (prod)
 const allowedOrigins = [
-  'http://localhost:3000',                                    // local React dev server
-  'https://thefolioproject-dm5pn0t0n-edrickmarks-projects.vercel.app', // your Vercel frontend
-  // Add any other custom domain you might use later
+  'http://localhost:3000',                                                           // local React dev
+  'https://thefolioproject-dm5pn0t0n-edrickmarks-projects.vercel.app',              // old Vercel URL
+  'https://thefolioproject-9necqrp04-edrickmarks-projects.vercel.app'               // your current Vercel URL
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed from this origin'));
     }
-    return callback(null, true);
   },
-  credentials: true,          // allow cookies/auth headers
+  credentials: true,
 }));
+
+// ✅ SIMPLER ALTERNATIVE (use if you keep getting new Vercel preview URLs):
+// app.use(cors({ origin: true, credentials: true }));
 
 // Parse incoming JSON request bodies
 app.use(express.json());
 
 // Serve uploaded image files as public URLs
-// e.g. https://your-backend.onrender.com/uploads/my-image.jpg
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ── Routes ────────────────────────────────────────────────────
