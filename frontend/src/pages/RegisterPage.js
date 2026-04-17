@@ -1,7 +1,7 @@
 // frontend/src/pages/RegisterPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import API from '../api/axios';   // ✅ use the configured axios instance
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -21,7 +21,6 @@ function RegisterPage() {
   const [apiError, setApiError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -121,23 +120,14 @@ function RegisterPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.fullname,
-          email: formData.email,
-          password: formData.password
-        })
+      // ✅ Use API instance (baseURL from env) instead of hardcoded localhost
+      const { data } = await API.post('/auth/register', {
+        name: formData.fullname,
+        email: formData.email,
+        password: formData.password
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-
-      // Save token and user data
+      // Save token and user data (same as login)
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       
@@ -151,7 +141,8 @@ function RegisterPage() {
       }
 
     } catch (err) {
-      setApiError(err.message);
+      const message = err.response?.data?.message || 'Registration failed';
+      setApiError(message);
       console.error('Registration error:', err);
     } finally {
       setLoading(false);
