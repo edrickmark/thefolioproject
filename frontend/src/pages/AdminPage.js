@@ -21,7 +21,7 @@ const AdminDashboard = () => {
   const [editImage, setEditImage] = useState(null);
   const [editImagePreview, setEditImagePreview] = useState('');
 
-  // ✅ Use environment variable for image base URL
+  // Use environment variable for image base URL
   const imageBaseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
   useEffect(() => {
@@ -130,9 +130,11 @@ const AdminDashboard = () => {
     }
   };
 
+  // ✅ FIXED: Use correct endpoint /posts/:id (from post.routes.js) instead of /admin/posts/:id/edit
   const handleSavePost = async (id) => {
     if (!editTitle.trim() || !editBody.trim()) {
       setError('Title and body required');
+      setTimeout(() => setError(''), 3000);
       return;
     }
     try {
@@ -141,13 +143,17 @@ const AdminDashboard = () => {
       formData.append('body', editBody);
       if (editImage) formData.append('image', editImage);
 
-      // ⚠️ Make sure your backend has this route or adjust accordingly
-      await API.put(`/admin/posts/${id}/edit`, formData);
-      setSuccess('Post updated');
+      await API.put(`/posts/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      setSuccess('Post updated successfully');
       setEditingId(null);
-      fetchPosts();
+      fetchPosts(); // refresh list
+      setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to update post');
+      setTimeout(() => setError(''), 3000);
     }
   };
 
