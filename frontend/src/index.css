@@ -1811,25 +1811,103 @@ form {
 }
 
 /* Buttons - only color changes, no layout */
-.edit-btn, .save-post-btn, .reply-btn, .action-btn.activate {
-  background: #FC809F !important;
+/* ==========================================================
+   GLOBAL BUTTON STYLES – PINK THEME (no layout changes)
+   ========================================================== */
+
+/* Primary buttons – pink gradient */
+button[type="submit"],
+.save-btn,
+.edit-btn,
+.save-post-btn,
+.reply-btn,
+.send-reply-btn,
+.action-btn.activate,
+.post-actions .edit-btn,
+.message-actions .reply-btn,
+.profile-page .save-btn {
+  background: linear-gradient(135deg, #FC809F, #FF9CB5) !important;
   color: white !important;
   border: none !important;
-  border-radius: 30px !important;
-  padding: 6px 16px !important;
+  transition: all 0.2s ease !important;
   cursor: pointer !important;
 }
 
-.remove-btn, .delete-msg-btn, .action-btn.deactivate {
+button[type="submit"]:hover,
+.save-btn:hover,
+.edit-btn:hover,
+.save-post-btn:hover,
+.reply-btn:hover,
+.send-reply-btn:hover,
+.action-btn.activate:hover,
+.post-actions .edit-btn:hover,
+.message-actions .reply-btn:hover,
+.profile-page .save-btn:hover {
+  background: linear-gradient(135deg, #E86A8A, #FC809F) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(252, 128, 159, 0.3);
+}
+
+/* Destructive buttons – soft pink with red text */
+.remove-btn,
+.delete-msg-btn,
+.action-btn.deactivate,
+.post-actions .remove-btn,
+.message-actions .delete-msg-btn {
   background: #ffe4e8 !important;
   color: #c62828 !important;
   border: 1px solid #ffb3c1 !important;
-  border-radius: 30px !important;
-  padding: 6px 16px !important;
+  transition: all 0.2s ease !important;
   cursor: pointer !important;
 }
 
-button:hover {
+.remove-btn:hover,
+.delete-msg-btn:hover,
+.action-btn.deactivate:hover,
+.post-actions .remove-btn:hover,
+.message-actions .delete-msg-btn:hover {
+  background: #ffcdd7 !important;
   transform: translateY(-2px);
-  transition: 0.2s;
+}
+
+/* Cancel / secondary buttons – light pink */
+.cancel-btn,
+.reply-form .cancel-btn {
+  background: #fff0f3 !important;
+  color: #FC809F !important;
+  border: 1px solid #FFB3C6 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.cancel-btn:hover,
+.reply-form .cancel-btn:hover {
+  background: #ffe0e8 !important;
+  transform: translateY(-2px);
+}
+
+/* Ensure all buttons have consistent rounded corners (optional) */
+button,
+.btn,
+.action-btn,
+.edit-btn,
+.remove-btn,
+.save-btn,
+.reply-btn,
+.delete-msg-btn,
+.cancel-btn {
+  border-radius: 30px !important;
+}
+
+/* Override any conflicting background on logout button (if needed) */
+.logout-btn {
+  background: transparent !important;
+  border: 1px solid #FC809F !important;
+  color: #FC809F !important;
+}
+
+.logout-btn:hover {
+  background: #FC809F !important;
+  color: white !important;
+  transform: translateY(-2px);
 }
