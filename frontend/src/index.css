@@ -609,6 +609,7 @@ footer {
   color: white !important;
   border-color: #FC809F !important;
   box-shadow: 0 2px 8px rgba(252, 128, 159, 0.3);
+  border-radius: 20px;
 }
 
 /* Optional: smooth transition */
