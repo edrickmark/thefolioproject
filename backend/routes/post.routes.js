@@ -38,15 +38,12 @@ router.post('/', protect, memberOrAdmin, upload.single('image'), async (req, res
   try {
     const { title, body } = req.body;
     
-    // Validate required fields
     if (!title || !body) {
       return res.status(400).json({ message: 'Title and content are required' });
     }
     
-    // Get image filename if uploaded
     const image = req.file ? req.file.filename : '';
     
-    // Create the post
     const post = await Post.create({ 
       title: title.trim(), 
       body: body.trim(), 
@@ -55,7 +52,6 @@ router.post('/', protect, memberOrAdmin, upload.single('image'), async (req, res
       author: req.user._id 
     });
 
-    // Populate author info before sending response
     await post.populate('author', 'name profilePic');
     
     res.status(201).json(post);
@@ -65,8 +61,8 @@ router.post('/', protect, memberOrAdmin, upload.single('image'), async (req, res
   }
 });
 
-// UPDATE post - only author or admin
-router.put('/:id', protect, async (req, res) => {
+// ✅ UPDATE post - only author or admin (with image upload)
+router.put('/:id', protect, upload.single('image'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     
@@ -84,11 +80,17 @@ router.put('/:id', protect, async (req, res) => {
     if (title) post.title = title.trim();
     if (body) post.body = body.trim();
     
+    // If a new image is uploaded, replace the old one
+    if (req.file) {
+      post.image = req.file.filename;
+    }
+    
     await post.save();
     await post.populate('author', 'name profilePic');
     
     res.json(post);
   } catch (err) { 
+    console.error('Update post error:', err);
     res.status(500).json({ message: err.message }); 
   }
 });
@@ -100,7 +102,6 @@ router.delete('/:id', protect, async (req, res) => {
     
     if (!post) return res.status(404).json({ message: 'Post not found' });
     
-    // Check if user is author or admin
     const isAuthor = post.author.toString() === req.user._id.toString();
     const isAdmin = req.user.role === 'admin';
     
