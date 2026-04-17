@@ -603,6 +603,25 @@ footer {
   background-color: var(--secondary);
 }
 
+/* Highlight selected quiz answer */
+.quiz-container .option.selected {
+  background: linear-gradient(135deg, #FC809F, #FF9CB5) !important;
+  color: white !important;
+  border-color: #FC809F !important;
+  box-shadow: 0 2px 8px rgba(252, 128, 159, 0.3);
+}
+
+/* Optional: smooth transition */
+.quiz-container .option {
+  transition: all 0.2s ease;
+}
+
+/* Keep hover effect for unselected */
+.quiz-container .option:hover:not(.selected) {
+  background: var(--secondary);
+  transform: scale(1.02);
+}
+
 /* Error Messages */
 .error {
   color: #ff4d4d;
