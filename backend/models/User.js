@@ -12,20 +12,18 @@ const userSchema = new mongoose.Schema({
   profilePic: { type: String, default: '' },
 }, { timestamps: true });
 
-// Pre‑save hook: hash password before saving
-userSchema.pre('save', async function(next) {
+// ✅ PRE-SAVE HOOK: Hash password before saving (async, no `next`)
+userSchema.pre('save', async function() {
   // Only hash if password is modified (or new)
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password')) return;
   
-  console.log(`Hashing password for user: ${this.email}`); // Debug log
-  
+  console.log(`Hashing password for user: ${this.email}`);
   try {
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
-    next();
   } catch (err) {
     console.error('Password hashing error:', err);
-    next(err);
+    throw err;  // Mongoose will handle the error
   }
 });
 
